@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css?family=Kalam|Sriracha&subset=latin-ext');
+
+body {
+    /* background: #eee; */
+    font-family: sans-serif;
+}
+
+h1, h2, .navbar-brand {
+    color: #337ab7 !important;
+    font-family: 'Sriracha', cursive;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff, 2px 2px 0 #337ab7;
+}
+h1 {
+    font-size: 416%;
+}
+h2 {
+    font-size: 313%;
+}
+
+.display-hidden {
+    display: none;
+}
+
+.color-gray {
+    color: gray;
+}
+
+.loading {
+    background: #f0f0f0 url("/gfx/loader.gif") no-repeat center center;
+}
+
+/** Rámec nad bublinou: */
+#bublina-frame {
+    display: inline-block;
+    width: auto;
+}
+
+/** Samotná bublina: */
+#bubblinus-maximus {
+    border: 1px solid #000;
+    height: 320px;
+    position: relative;
+    width: 480px;
+}
+
+#bubblinus-maximus .bubble {
+    background: rgba(255, 255, 255, .9);
+    border: solid 1px #000;
+    color: #000;
+    position: absolute;
+    height: 60px;
+    width: 160px;
+}
+
+#bubblinus-maximus .bubble .tool {
+    border: 1px solid #000;
+    border-bottom: none;
+    border-radius: 0;
+    color: #fff;
+    height: 25px;
+    line-height: 25px;
+    position: absolute;
+    text-align: center;
+    top: -25px;
+}
+
+#bubblinus-maximus .bubble .handle {
+    background: #888;
+    cursor: move;
+    left: -1px;
+    width: 70px;
+}
+
+#bubblinus-maximus .bubble .delete {
+    background: #f00;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: bold;
+    right: -1px;
+    width: 25px;
+}
+
+#bubblinus-maximus .bubble .arrow {
+    cursor: pointer;
+    display: none;
+    height: 20px;
+    position: absolute;
+    width: 20px;
+}
+
+#bubblinus-maximus .bubble .arrow-nw {
+    background: linear-gradient(225deg, rgba(255,255,255,0) 48%, #000 48%, #000, 52%, rgba(255,255,255,.9) 52%);
+    border-left: 1px solid #000;
+    top: -20px;
+    display: block;
+    left: 10px;
+}
+#bubblinus-maximus .bubble .arrow-ne {
+    background: linear-gradient(135deg, rgba(255,255,255,0) 48%, #000 48%, #000, 52%, rgba(255,255,255,.9) 52%);
+    border-right: 1px solid #000;
+    top: -20px;
+    display: block;
+    right: 10px;
+}
+#bubblinus-maximus .bubble .arrow-se {
+    background: linear-gradient(45deg, rgba(255,255,255,0) 48%, #000 48%, #000, 52%, rgba(255,255,255,.9) 52%);
+    border-right: 1px solid #000;
+    bottom: -20px;
+    display: block;
+    right: 10px;
+}
+#bubblinus-maximus .bubble .arrow-sw {
+    background: linear-gradient(315deg, rgba(255,255,255,0) 48%, #000 48%, #000, 52%, rgba(255,255,255,.9) 52%);
+    border-left: 1px solid #000;
+    bottom: -20px;
+    display: block;
+    left: 10px;
+}
+
+#bubblinus-maximus textarea {
+    resize: none;
+}
+
+#bubblinus-maximus .text {
+    background: transparent;
+    border: none;
+    font-size: 12px; /* strip size */
+    position: absolute;
+    height: 100%;
+    left: 0;
+    padding: 2px 5px;
+    top: 0;
+    width: 100%;
+}
+
+/** Text pod bublinou: */
+#bublina-bottomtext-input {
+    border: 1px solid #888;
+    border-top: none;
+    font-size: 12px; /* strip size */
+    height: 3em;
+    padding: 2px 5px;
+    resize: none;
+    width: 100%;
+}
+
+#bublina-bottomtext-show {
+    display: none;
+    background: #fff;
+    border: none;
+    border-top: 1px solid #000;
+    font-size: 12px; /* strip size */
+    height: auto;
+    min-height: 3em;
+    padding: 2px 5px 1.5em 5px;
+    width: 100%;
+}
+
+
+/** Modální okno: */
+#modal-wrapper {
+    background: rgba(255,255,255,.8);
+    height: 100%;
+    left: 0;
+    margin: 0;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+#modal-wrapper > .content {
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    margin: 10px auto 0 auto;
+    min-height: 80%;
+    padding: 0 5px;
+    width: 960px;
+}
+
+#modal-wrapper .drag-text:hover {
+}
+
+#modal-wrapper .closer {
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    font-family: sans-serif;
+    font-size: 250%;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    margin: 0;
+    width: 30px;
+}
