@@ -304,9 +304,30 @@ function getParameter (paramName) {
     return url.searchParams.get(paramName);
 }
 
+/**
+ * Vybereme náhodně jednu hodnotu z pole
+ */
+function chooseOneFrom (arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/**
+ * Načteme prvotní obrázek
+ */
 function loadImageOnStart (url) {
     if (!url) {
-        url = "./gfx/image_prague.jpg";
+        url = chooseOneFrom([
+            "./gfx/image_prague.jpg",
+            "./gfx/image_brno.jpg",
+            "./gfx/image_ostrava.jpg",
+            "./gfx/image_plzen.jpg",
+            "./gfx/image_ceske-budejovice.jpg",
+            "./gfx/image_usti-nad-labem.jpg",
+            "./gfx/image_liberec.jpg",
+            "./gfx/image_pardubice.jpg",
+            "./gfx/image_litomerice.jpg",
+            "./gfx/image_kutna-hora.jpg"
+        ]);
     }
     $.getJSON(
         "./imgurl.php",
