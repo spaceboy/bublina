@@ -199,9 +199,14 @@ function loadImageAjax (r) {
         $("#load-image-internal").attr("src", r.data);
     }
     if (r.hasOwnProperty("error")) {
-        $("#modal-wrapper .error")
-            .text(r.error)
-            .show();
+        if ($("#modal-wrapper .error").length) {
+            $("#modal-wrapper .error")
+                .text(r.error)
+                .show();
+        } else {
+            $("#bubblinus-maximus").removeClass("loading");
+            $("body").prepend('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Chyba:</strong> ' + r.error + '</div>');
+        }
     }
 }
 
