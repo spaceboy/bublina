@@ -3,6 +3,14 @@
  * Třída pro přegenerování obrázku
  */
 
+if (!function_exists('getimagesizefromstring')) {
+    function getimagesizefromstring($data)
+    {
+        $uri = 'data://application/octet-stream;base64,' . base64_encode($data);
+        return getimagesize($uri);
+    }
+}
+
 class ImageURL {
 
     const   MAX_WIDTH   = 640;
@@ -109,7 +117,7 @@ class ImageURL {
 
         $imgSize            = getimagesizefromstring($this->imgContents);
         $imgMime            = $imgSize['mime'];
-        if (!in_array($imgMime, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'])) {
+        if (!in_array($imgMime, array('image/jpeg', 'image/jpg', 'image/png', 'image/gif'))) {
             throw new \Exception('Not image or unsuported image type.');
         }
 
@@ -123,7 +131,7 @@ class ImageURL {
      */
     private function getOutput()
     {
-        $output = [];
+        $output = array();
         try {
             $output['data']     = $this->getDataUrl();
         } catch (\Exception $ex) {
