@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Kalam|Sriracha&subset=latin-ext');
 
+@font-face {
+  font-family: 'BohemianTypewriter';
+  src: URL("/fonts/Bohemian Typewriter.ttf") format("truetype");
+}
+
 body {
     /* background: #eee; */
     font-family: sans-serif;
@@ -32,6 +37,7 @@ h2 {
 
 /** Rámec nad bublinou: */
 #bublina-frame {
+    background: #fff;
     display: inline-block;
     width: auto;
 }

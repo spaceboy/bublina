@@ -18,6 +18,9 @@ class ImageURL {
 
     private $imgContents;
 
+    /** @var boolean Chceme plnou (maximální) šířku obrázku i v případě, že je po zmenšení užší */
+    private $fullWidth  = FALSE;
+
 
     /**
      * Class constructor
@@ -27,23 +30,36 @@ class ImageURL {
     }
 
     /**
+     * Nastaví parametr, zda chceme obrázek na plnou (maximální) šířku
+     * @param bool fullWidth
+     * @return $this
+     */
+    public function setFull($fullWidth = FALSE)
+    {
+        $this->fullWidth    = $fullWidth;
+        return $this;
+    }
+
+    /**
      * Načte obrázek z URL (např. http://server.ext/image.png)
      * @param string image URL
-     * @return void
+     * @return $this
      */
     public function setImageUrl($imageUrl)
     {
         $this->imgContents  = file_get_contents($imageUrl);
+        return $this;
     }
 
     /**
      * Načte obrázek z dataURL (např. data:image/jpeg;base64,==image-data==)
      * @param string image dataURL
-     * @return void
+     * @return $this
      */
     public function setImageDataUrl($dataUrl)
     {
         $this->imgContents  = base64_decode(preg_replace('/data\:image\/(jpe?g|gif|png)\;base64\,/', '', $dataUrl));
+        return $this;
     }
 
     /**
@@ -53,20 +69,24 @@ class ImageURL {
      * @param integer new height
      * @param integer old width
      * @param integer old height
+     * @param integer destination X
+     * @param integer real new image width
      * @return image resource
      */
-    private function imageResample($imgSrc, $newW, $newH, $oldW, $oldH)
+    private function imageResample($imgSrc, $newW, $newH, $oldW, $oldH, $destX, $imgW)
     {
         $imgDst = @imagecreatetruecolor($newW, $newH);
         if (FALSE === $imgDst) {
             throw new \Exception('Cannot resample image.');
         }
+        imagesavealpha($imgDst, TRUE);
+        imagefill($imgDst, 0, 0, imagecolorallocatealpha($imgDst, 0, 0, 0, 127));
         imagecopyresampled(
             $imgDst,            // destination image
             $imgSrc,            // source image
-            0, 0,               // destination X, Y
+            $destX, 0,          // destination X, Y
             0, 0,               // source X, Y
-            $newW, $newH,       // destination width, height
+            $imgW, $newH,       // destination width, height
             $oldW, $oldH        // source width, height
         );
         return $imgDst;
@@ -98,9 +118,19 @@ class ImageURL {
             $newH = static::MAX_HEIGHT;
         }
 
+        // Pokud budeme umisťovat užší obrázek do středu, opravíme velikosti:
+        if ($this->fullWidth && static::MAX_WIDTH > $newW) {
+            $imgW   = $newW;
+            $destX  = (static::MAX_WIDTH - $newW) / 2;
+            $newW   = static::MAX_WIDTH;
+        } else {
+            $imgW   = $newW;
+            $destX  = 0;
+        }
+
         // Vytvoříme zmenšeninu:
         ob_start();
-        imagepng($this->imageResample(imagecreatefromstring($this->imgContents), $newW, $newH, $width, $height));
+        imagepng($this->imageResample(imagecreatefromstring($this->imgContents), $newW, $newH, $width, $height, $destX, $imgW));
         $this->imgContents  = ob_get_contents();
         ob_end_clean();
     }

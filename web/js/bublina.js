@@ -1,5 +1,22 @@
 'use strict';
 
+var fontFace    = "sans-serif";
+var fontSize    = "middle";
+var fontFaceSize = {
+    "sans-serif": {
+        "small":    "10px",
+        "middle":   "12px",
+        "large":    "14px"
+    },
+    "BohemianTypewriter": {
+        "small":    "12px",
+        "middle":   "14px",
+        "large":    "16px"
+    }
+}
+
+
+
 /**
  * Plugin pro zvětšování výšky textarea v závislosti na obsahu textu
  */
@@ -217,6 +234,7 @@ function loadImageAjax (r) {
 function loadImage (e) {
     e.preventDefault();
     showModal($("#load-image"), function () {
+        // Ošetříme přetažení obrázku:
         if (window.FileReader) {
             $("#modal-wrapper .drag-text")
                 .on("drop", function (e) {
@@ -233,15 +251,45 @@ function loadImage (e) {
                 });
             $("#modal-wrapper .drag-text").show();
         }
-        $("#modal-wrapper .load-image-submit").on("click", function () {
-        $("#bubblinus-maximus").addClass("loading");
+        // Ošetříme vložení URL (načtení AJAX):
+        $("#modal-wrapper .load-image-submit").on("click", function (e) {
+            $("#bubblinus-maximus").addClass("loading");
             $.getJSON(
                 "./imgurl.php",
                 {
-                    "url": $("#modal-wrapper .load-image-url").val()
+                    "url":  $("#modal-wrapper input[name=\"url\"]").val(),
+                    "full": ($("#modal-wrapper input[name=\"full\"]")[0].checked ? "1" : "")
                 },
                 loadImageAjax
             );
+        });
+        // Ošetříme vložení URL (přejít na adresu s parametrem):
+        $("#modal-wrapper .load-image-redir").on("click", function () {
+            $("#bubblinus-maximus").addClass("loading");
+            location.href = "/?url=" + encodeURIComponent($("#modal-wrapper input[name=\"url\"]").val()) + ($("#modal-wrapper input[name=\"full\"]")[0].checked ? "&full=1" : "");
+            return;
+        });
+        // https://scontent-prg1-1.xx.fbcdn.net/v/t1.0-9/106380013_3259628924087356_5586813539749098183_n.jpg?_nc_cat=109&_nc_sid=2d5d41&_nc_ohc=TXN7iqpbVe8AX8DKQ1g&_nc_ht=scontent-prg1-1.xx&oh=2f3489a03ef88e0e8654ddb7e3480cc2&oe=5F20C9B0
+        // Ošetříme upload obrázku:
+        $("#modal-wrapper .image-upload").on("submit", function (e) {
+            e.preventDefault();
+            var fd = new FormData(e.target);
+            $.ajax({
+                "url":          "./imgurl.php",
+                "type":         "POST",
+                "data":         new FormData(e.target),
+                "contentType":  false,
+                "cache":        false,
+                "processData":  false,
+                "success":      function (r) {
+                    console.log("success");
+                    console.log(r);
+                },
+                "error":        function (r) {
+                    console.log("error");
+                    console.log(r);
+                }
+            });
         });
     });
 }
@@ -260,7 +308,7 @@ function makeImage (e) {
     var bottomText  = $("#bublina-bottomtext-input").hide().val();
     if (bottomText) {
         $("#bublina-bottomtext-show")
-            .text(bottomText)
+            .html(bottomText)
             .css("marginTop", $("#bubblinus-maximus").height() + "px")
             .show();
     }
@@ -317,9 +365,19 @@ function chooseOneFrom (arr) {
 }
 
 /**
+ * Nastavíme řez písma
+ */
+function setFontProperties () {
+    $("#bublina-bottomtext-input, #bublina-bottomtext-show, #bubblinus-maximus .text").css({
+        "fontFamily":   fontFace,
+        "fontSize":     fontFaceSize[fontFace][fontSize]
+    });
+}
+
+/**
  * Načteme prvotní obrázek
  */
-function loadImageOnStart (url) {
+function loadImageOnStart (url, full) {
     if (!url) {
         url = chooseOneFrom([
             "./gfx/image_prague.jpg",
@@ -337,7 +395,8 @@ function loadImageOnStart (url) {
     $.getJSON(
         "./imgurl.php",
         {
-            "url": url
+            "url":  url,
+            "full": full
         },
         loadImageAjax
     );
@@ -354,6 +413,16 @@ $(function () {
     $("#btn-image").on("click", loadImage);
     $("#btn-bubble").on("click", createBubble);
     $("#btn-camera").on("click", makeImage);
-    loadImageOnStart(getParameter('url'));
+    $("#font-face > li > a").on("click", function (e) {
+        e.preventDefault();
+        fontFace    = e.currentTarget.getAttribute("data-face");
+        setFontProperties();
+    });
+    $("#font-size > button").on("click", function (e) {
+        e.preventDefault();
+        fontSize    = e.currentTarget.getAttribute("data-size");
+        setFontProperties();
+    });
+    loadImageOnStart(getParameter("url"), getParameter("full"));
     createBubble();
 });

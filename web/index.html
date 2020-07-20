@@ -4,17 +4,17 @@
         <meta charset="utf-8">
         <meta property="og:title" content="Bublina" />
         <meta property="og:image" content="http://bublina.wz.cz/gfx/icon-512.png" />
-        <title>Bublina @ wz.cz</title>
+        <title>Bublina@spaceport.cz</title>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/jquery-ui-1.12.1.custom/jquery-ui.min.css">
-        <link rel="stylesheet" href="/css/bublina.css">
+        <link rel="stylesheet" href="/css/bublina.css?v=1.2">
         <script src="/js/jquery-3.3.1.min.js"></script>
         <script src="/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
         <script src="/js/dom-to-image.js"></script>
         <script src="/js/crc64.js"></script>
         <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/bublina.js"></script>
-        <link rel="icon" type="image/png" href="/gfx/icon-32.png">
+        <script src="/js/bublina.js?v=1.2"></script>
+        <link rel="shortcut icon" type="image/png" href="/gfx/icon-32.png">
     </head>
     <body>
 
@@ -61,7 +61,25 @@
                         </div>
                         <textarea id="bublina-bottomtext-input" data-keep-height="true"></textarea>
                     </div>
+                    <br />
+                    <div class="col-md-5 col-md-push-7">
+                        <div id="font-size" class="btn-group btn-group-sm" role="group" aria-label="Nastavení písma">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownFontFace" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Písmo<span class="caret"></span></button>
+                                    <ul id="font-face" class="dropdown-menu" aria-labelledby="dropdownFontFace">
+                                        <li><a class="dropdown-item" href="#" data-face="sans-serif">Bezpatkové</a></li>
+                                        <li><a class="dropdown-item" href="#" data-face="BohemianTypewriter">Psací stroj</a></li>
+                                    </ul>
+                                </button>
+                            </div>
+                            <button type="button" class="btn btn-default" data-size="small">Malé</button>
+                            <button type="button" class="btn btn-default" data-size="middle">Střední</button>
+                            <button type="button" class="btn btn-default" data-size="large">Velké</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="row">
             </div>
 
         </div>
@@ -72,12 +90,43 @@
             <div class="content">
                 <h2>Načíst podkladový obrázek</h2>
                 <div class="error form-group display-hidden"></div>
-                <div class="form-group">
-                    <input type="url" class="form-control load-image-url" placeholder="Vložte URL obrázku" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="url" class="form-control load-image-url" name="url" placeholder="Vložte URL obrázku" />
+                            <!-- @@TODO Přidat "value" z GET parametru "url" -->
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-control load-image-submit">Načíst</button>
+                <div class="row">
+                    <div class="col-md-3 col-md-push-6">
+                        <div class="form-group">
+                            <label><input type="checkbox" name="full" /> Na plnou šířku</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-md-push-6">
+                        <div class="form-group">
+                            <button class="btn btn-primary load-image-redir">Přejít na</button>
+                            <button class="btn btn-control load-image-submit">Načíst</button>
+                        </div>
+                    </div>
                 </div>
+                <!--form class="image-upload" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Nebo vyberte obrázek z disku: <input type="file" name="upload" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-control load-image-submit" value="Nahrát" />
+                            </div>
+                        </div>
+                    </div>
+                </form-->
                 <div class="drag-text display-hidden well well-lg">
                     <p class="color-gray">Nebo přetáhněte obrázek na zvýrazněnou plochu</p>
                 </div>
