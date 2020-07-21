@@ -234,6 +234,15 @@ function loadImageAjax (r) {
 function loadImage (e) {
     e.preventDefault();
     showModal($("#load-image"), function () {
+        // Pokud máme obrázek v parametru:
+        var url = getParameter("url");
+        if (url) {
+            $("#modal-wrapper input[name=\"url\"]").val(url);
+            var full = getParameter("full");
+            if (full) {
+                $("#modal-wrapper input[name=\"full\"]")[0].checked = "checked";
+            }
+        }
         // Ošetříme přetažení obrázku:
         if (window.FileReader) {
             $("#modal-wrapper .drag-text")

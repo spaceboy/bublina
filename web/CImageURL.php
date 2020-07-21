@@ -75,12 +75,39 @@ class ImageURL {
      */
     private function imageResample($imgSrc, $newW, $newH, $oldW, $oldH, $destX, $imgW)
     {
+        // Vytvoříme obrázek:
         $imgDst = @imagecreatetruecolor($newW, $newH);
         if (FALSE === $imgDst) {
             throw new \Exception('Cannot resample image.');
         }
-        imagesavealpha($imgDst, TRUE);
-        imagefill($imgDst, 0, 0, imagecolorallocatealpha($imgDst, 0, 0, 0, 127));
+        imagefill($imgDst, 0, 0, imagecolorallocate($imgDst, 255, 255, 255));
+
+        // Vytvoříme obrazový podklad, je-li žádoucí:
+        if ($this->fullWidth && ($imgW !== static::MAX_WIDTH)) {
+            $imgLayer   = @imagecreatetruecolor($newW, $newH);
+            if (FALSE === $imgLayer) {
+                throw new \Exception('Cannot create image layer.');
+            }
+            imagefill($imgLayer, 0, 0, imagecolorallocate($imgLayer, 255, 255, 255));
+            imagecopyresampled(
+                $imgLayer,      // destination image
+                $imgSrc,        // source image
+                0, 0,           // destination X, Y
+                0, 0,           // source X, Y
+                $newW, $newH,   // destination width, height
+                $oldW, $oldH    // source width, height
+            );
+            imagecopymerge(
+                $imgDst,        // destination image
+                $imgLayer,      // source image
+                0, 0,           // destination X, Y
+                0, 0,           // source X, Y
+                $newW, $newH,   // source width, height
+                20
+            );
+        }
+
+        // Zkopírujeme zdrojový obrázek:
         imagecopyresampled(
             $imgDst,            // destination image
             $imgSrc,            // source image
