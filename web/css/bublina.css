@@ -35,6 +35,14 @@ h2 {
     background: #f0f0f0 url("/gfx/loader.gif") no-repeat center center;
 }
 
+.alert-info {
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
 /** Rámec nad bublinou: */
 #bublina-frame {
     background: #fff;
