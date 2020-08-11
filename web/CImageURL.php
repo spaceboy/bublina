@@ -127,8 +127,12 @@ class ImageURL {
      * @return void
      */
     private function resizeImage($width, $height, $imgMime) {
-        $oversizeX  = ($width > static::MAX_WIDTH);
         $oversizeY  = ($height > static::MAX_HEIGHT);
+        $oversizeX  = (
+            $this->fullWidth
+            ? ($width !== static::MAX_WIDTH)
+            : ($width > static::MAX_WIDTH)
+        );
         if (!$oversizeX && !$oversizeY) {
             return;
         }
